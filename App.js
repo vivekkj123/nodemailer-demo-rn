@@ -17,8 +17,51 @@ const App = () => {
     email: '',
     message: '',
   });
+  let sendMailInstalled = () => {
+    // TODO: Use Formik and Yup for validation
+    if (
+      FormDetails.name === '' ||
+      FormDetails.mobile === '' ||
+      FormDetails.email === '' ||
+      FormDetails.message === ''
+    ) {
+      Alert.alert('Error', 'Please enter all required values');
+      return;
+    }
     let emailBody = `mailto:<info@redpositive.in>?subject=Message from Nodemailer Task&body=
+Name: ${FormDetails.name}
+E-Mail: ${FormDetails.email}
+Mobile No.: ${FormDetails.mobile}
+Message: ${FormDetails.message}`;
+    Linking.openURL(emailBody);
   };
+  let sendMailThroughNodeMailer = async () => {
+    // TODO: Use Formik and Yup for validation
+    if (
+      FormDetails.name === '' ||
+      FormDetails.mobile === '' ||
+      FormDetails.email === '' ||
+      FormDetails.message === ''
+    ) {
+      Alert.alert('Error', 'Please enter all required values');
+      return;
+    }
+    try {
+      await fetch('https://nodemailer.up.railway.app/send-mail/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application.json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(FormDetails),
+      }).then(res => {
+        res = res.json().then(r => {
+          Alert.alert('Info', r.message);
+        });
+      });
+    } catch (err) {
+      Alert.alert('Error', err);
+    }
   };
   return (
     <SafeAreaView style={styles.MainView}>
@@ -60,12 +103,14 @@ const App = () => {
         </View>
         <View>
           <Button
+            onPress={sendMailThroughNodeMailer}
             buttonColor="#727"
             style={styles.Button}
             mode="contained">
             Send
           </Button>
           <Button
+            onPress={sendMailInstalled}
             style={styles.Button}
             mode="outlined">
             Send using Installed Mail clients
