@@ -1,117 +1,96 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React from 'react';
-import type {Node} from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
   Text,
-  useColorScheme,
+  StyleSheet,
   View,
+  ScrollView,
+  Linking,
+  Alert,
 } from 'react-native';
+import {Button, TextInput} from 'react-native-paper';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
- * LTI update could not be added via codemod */
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
-
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+const App = () => {
+  const [FormDetails, setFormDetails] = useState({
+    name: '',
+    mobile: '',
+    email: '',
+    message: '',
+  });
+    let emailBody = `mailto:<info@redpositive.in>?subject=Message from Nodemailer Task&body=
   };
-
+  };
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+    <SafeAreaView style={styles.MainView}>
+      <ScrollView>
+        <View>
+          <Text style={styles.head}>React Native Node Mailer Task</Text>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Name"
+            mode="outlined"
+            value={FormDetails.name}
+            onChangeText={t => setFormDetails({...FormDetails, name: t})}
+          />
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Mobile No."
+            keyboardType="phone-pad"
+            mode="outlined"
+            value={FormDetails.mobile}
+            onChangeText={t => setFormDetails({...FormDetails, mobile: t})}
+          />
+          <TextInput
+            style={styles.TextInput}
+            placeholder="E-Mail"
+            mode="outlined"
+            keyboardType="email-address"
+            value={FormDetails.email}
+            onChangeText={t => setFormDetails({...FormDetails, email: t})}
+          />
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Message"
+            mode="outlined"
+            multiline
+            numberOfLines={8}
+            value={FormDetails.message}
+            onChangeText={t => setFormDetails({...FormDetails, message: t})}
+          />
+        </View>
+        <View>
+          <Button
+            buttonColor="#727"
+            style={styles.Button}
+            mode="contained">
+            Send
+          </Button>
+          <Button
+            style={styles.Button}
+            mode="outlined">
+            Send using Installed Mail clients
+          </Button>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+let styles = StyleSheet.create({
+  head: {
+    color: '#000',
+    fontSize: 32,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  MainView: {
+    backgroundColor: '#fff',
+    height: '100%',
+    width: '100%',
+    padding: 30,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  TextInput: {
+    marginVertical: 10,
   },
-  highlight: {
-    fontWeight: '700',
+  Button: {
+    marginVertical: 10,
   },
 });
-
 export default App;
